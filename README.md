@@ -11,6 +11,7 @@ monitor_processed_ops_total 13
 monitor_query_executed{query="hgetall my_executed_keys"} 13
 ```
 ### How to run it with docker (easiest way)
+The image is a `linux:alpine` with `redis-cli` and the build binary installed.
 ```
 $ docker run -e PORT=8080 \
     -e REDIS_URI=redis://your-redis-server-uri:6379 \
