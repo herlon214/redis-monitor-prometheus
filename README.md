@@ -3,12 +3,12 @@ Executes the `redis-cli monitor`, parse the query and export as a prometheus met
 
 The metrics will look like this:
 ```
-# HELP monitor_processed_ops_total The total number of processed events
-# TYPE monitor_processed_ops_total counter
-monitor_processed_ops_total 13
-# HELP monitor_query_executed Total number that a query was executed
-# TYPE monitor_query_executed counter
-monitor_query_executed{query="hgetall my_executed_keys"} 13
+# HELP redis_processed_queries_total The total number of processed events
+# TYPE redis_processed_queries_total counter
+redis_processed_queries_total 13
+# HELP redis_query_executed Total number that a query was executed
+# TYPE redis_query_executed counter
+redis_query_executed{query="hgetall my_executed_keys"} 13
 ```
 ### How to run it with docker (easiest way)
 The image is a `linux:alpine` with `redis-cli` and the build binary installed.
