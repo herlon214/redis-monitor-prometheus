@@ -4,9 +4,9 @@ import (
 	"log"
 	"strings"
 
+	"github.com/herlon214/redis-monitor-prometheus/pkg/redis"
 	prom "github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-	"github.com/herlon214/redis-monitor-prometheus/pkg/redis"
 )
 
 var (
@@ -41,13 +41,17 @@ func (p *Writer) Write(line []byte) (n int, err error) {
 
 		for _, queryLine := range queries {
 			// Parse the line to extract only the command part
-			query := redis.ExtractQueryFromLine(queryLine)
+			query, err := redis.ExtractQueryFromLine(queryLine)
 
-			// Increase the query execution
-			QueryGauge.With(prom.Labels{"query": query}).Add(1)
+			if err != nil {
+				log.Printf("Error found: %+v\n", err)
+			} else {
+				// Increase the query execution
+				QueryGauge.With(prom.Labels{"query": query}).Add(1)
 
-			// Increase the processed events
-			ProcessedQueriesGauge.Add(1)
+				// Increase the processed events
+				ProcessedQueriesGauge.Add(1)
+			}
 		}
 
 		if !StartedScrapping {
