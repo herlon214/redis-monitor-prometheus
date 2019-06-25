@@ -6,6 +6,7 @@ import (
 
 	prom "github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
+	"github.com/herlon214/redis-monitor-prometheus/pkg/redis"
 )
 
 var (
@@ -27,17 +28,15 @@ type Writer struct{}
 func (p *Writer) Write(line []byte) (n int, err error) {
 	body := strings.TrimSuffix(string(line), "\n")
 
-	// Default output for redis command:
+	// Standard output for redis command:
 	// 1561384669.058000 [0 10.2.30.157:57984] "hgetall" "my_key" [...]
 	isCommand := strings.Contains(body, "[") && strings.Contains(body, "]")
 
 	// Only do some action if it's a query
 	if isCommand {
 		// Parse the line to extract only the command part
-		querySlice := strings.Split(body, " ")
-		querySlice = querySlice[3:]
-		query := strings.Join(querySlice, " ")
-		query = strings.Replace(query[:len(query)-1], "\"", "", -1)
+		query := redis.ExtractQueryFromLine(body)
+
 		// Increase the query execution
 		queryCounter.With(prom.Labels{"query": query}).Inc()
 
