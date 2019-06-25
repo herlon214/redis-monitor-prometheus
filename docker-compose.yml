@@ -6,7 +6,7 @@ services:
     ports:
       - 6379:6379
   watcher:
-    image: herlon214/redis-monitor-prometheus
+    build: ./
     depends_on:
       - redis
     ports:
