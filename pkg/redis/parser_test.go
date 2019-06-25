@@ -11,6 +11,6 @@ func TestExtractQueryFromLine(t *testing.T) {
 	query := redis.ExtractQueryFromLine(line)
 
 	if query != "hgetall my_key" {
-		t.Errorf("Invalid extracteed query output: %s", query)
+		t.Errorf("Invalid extracted query output: %s", query)
 	}
 }
