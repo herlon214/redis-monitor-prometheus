@@ -11,7 +11,7 @@ redis_processed_queries_total 13
 redis_query_executed{query="hgetall my_executed_keys"} 13
 ```
 ### How to run it with docker (easiest way)
-The image is a `linux:alpine` with `redis-cli` and the build binary installed.
+The image is a `linux:alpine` with `redis-cli` and the build binary installed. It's only `16.8MB` :smile:
 ```
 $ docker run -e PORT=8080 \
     -e REDIS_URI=redis://your-redis-server-uri:6379 \
