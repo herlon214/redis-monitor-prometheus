@@ -2,7 +2,6 @@ package prometheus
 
 import (
 	"log"
-	"fmt"
 	"strings"
 
 	prom "github.com/prometheus/client_golang/prometheus"
