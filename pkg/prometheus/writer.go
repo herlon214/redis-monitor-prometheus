@@ -10,13 +10,13 @@ import (
 )
 
 var (
-	// ProcessedQueriesGauge is the total number of queries executed in prometheus
-	ProcessedQueriesGauge = promauto.NewGauge(prom.GaugeOpts{
+	// ProcessedQueriesCounter is the total number of queries executed in prometheus
+	ProcessedQueriesCounter = promauto.NewCounter(prom.CounterOpts{
 		Name: "redis_processed_queries_total",
 		Help: "The total number of processed events",
 	})
-	// QueryGauge is the query executed prometheus counter
-	QueryGauge = promauto.NewGaugeVec(prom.GaugeOpts{
+	// QueryCounter is the query executed prometheus counter
+	QueryCounter = promauto.NewCounterVec(prom.CounterOpts{
 		Name: "redis_query_executed",
 		Help: "Total number that a query was executed",
 	}, []string{"query"})
@@ -47,10 +47,10 @@ func (p *Writer) Write(line []byte) (n int, err error) {
 				log.Printf("Error found: %+v\n", err)
 			} else {
 				// Increase the query execution
-				QueryGauge.With(prom.Labels{"query": query}).Add(1)
+				QueryCounter.With(prom.Labels{"query": query}).Add(1)
 
 				// Increase the processed events
-				ProcessedQueriesGauge.Add(1)
+				ProcessedQueriesCounter.Add(1)
 			}
 		}
 
