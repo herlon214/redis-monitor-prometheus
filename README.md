@@ -10,6 +10,28 @@ redis_processed_queries_total 13
 # TYPE redis_query_executed counter
 redis_query_executed{query="hgetall my_executed_keys"} 13
 ```
+
+### Environment
+
+```
+* PORT=8080 // Webserver port
+* REDIS_URI=redis://your-redis-server-uri:6379;redis://your-redis-server2-uri:6379 // It's also supported multiple servers
+* GRANULARITY=1 // Check the section about granularity below
+```
+
+#### Granularity
+It's how many parts of the executed commands do you want. 
+
+E.g: The command `sismember firstpart secondpart`
+
+```
+GRANULARITY = 0 = sismember firstpart secondpart // The whole command
+GRANULARITY = 1 = sismember 
+GRANULARITY = 2 = sismember firstpart
+GRANULARITY = 3 = sismember firstpart secondpart
+```
+
+
 ### How to run it with docker (easiest way)
 The image is a `linux:alpine` with `redis-cli` and the build binary installed. It's only `16.8MB` :smile:
 ```

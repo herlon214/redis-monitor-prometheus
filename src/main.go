@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/herlon214/redis-monitor-prometheus/pkg/prometheus"
@@ -19,11 +20,15 @@ var (
 	// redisURI is used to connect to redis
 	// you can put many URI, separated by semicolon
 	redisURI = os.Getenv("REDIS_URI")
+	// Granularity of the extracted command
+	granularity, _ = strconv.Atoi(os.Getenv("GRANULARITY"))
 )
 
 func main() {
 	log.Println("[ Redis Monitor Prometheus ]")
-	promWriter := &prometheus.Writer{}
+	promWriter := &prometheus.Writer{
+		Granularity: granularity,
+	}
 	watcher := &redis.Watcher{
 		Writer: promWriter,
 	}

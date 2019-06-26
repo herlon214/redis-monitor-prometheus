@@ -19,6 +19,7 @@ services:
     environment:
       - PORT=8080
       - REDIS_URI=redis://redis:6379;redis://redis2:6379
+      - GRANULARITY=1
   command1:
     image: redis:5.0-alpine
     command: ["/bin/sh", "-c", "echo 'Open http://127.0.0.1:8080/metrics' && while [ true ]; do redis-cli -u redis://redis:6379 hgetall 'my_executed_keys' && sleep 1; done"]

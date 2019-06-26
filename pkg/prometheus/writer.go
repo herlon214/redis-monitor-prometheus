@@ -21,14 +21,16 @@ var (
 		Help: "Total number that a query was executed",
 	}, []string{"query"})
 	// StartedScrapping flag used to check if the scrapping started
-	StartedScrapping = false // Used to show the scrapping started message
+	StartedScrapping = false
 )
 
 // Writer is responsible for write prometheus metrics
-type Writer struct{}
+type Writer struct {
+	Granularity int
+}
 
 // Write writes prometheus metrics from the given line
-func (p *Writer) Write(line []byte) (n int, err error) {
+func (w *Writer) Write(line []byte) (n int, err error) {
 	body := strings.TrimSuffix(string(line), "\n")
 
 	// Standard output for redis command:
@@ -41,7 +43,7 @@ func (p *Writer) Write(line []byte) (n int, err error) {
 
 		for _, queryLine := range queries {
 			// Parse the line to extract only the command part
-			query, err := redis.ExtractQueryFromLine(queryLine)
+			query, err := redis.ExtractQueryFromLine(queryLine, w.Granularity)
 
 			if err != nil {
 				log.Printf("Error found: %+v\n", err)

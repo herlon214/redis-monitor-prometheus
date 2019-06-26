@@ -6,7 +6,7 @@ import (
 )
 
 // ExtractQueryFromLine get the monitor output and extracts the query
-func ExtractQueryFromLine(line string) (string, error) {
+func ExtractQueryFromLine(line string, granularity int) (string, error) {
 	querySlice := strings.Split(line, " ")
 
 	if len(querySlice) < 3 {
@@ -17,5 +17,13 @@ func ExtractQueryFromLine(line string) (string, error) {
 	query := strings.Join(querySlice, " ")
 	query = strings.Replace(query[:len(query)-1], "\"", "", -1)
 
-	return query, nil
+	// Return based on granularity
+	if granularity == 0 {
+		return query, nil
+	} else {
+		granularQuery := strings.Split(query, " ")
+		granularQuery = granularQuery[0:granularity]
+
+		return strings.Join(granularQuery, " "), nil
+	}
 }
