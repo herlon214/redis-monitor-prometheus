@@ -26,6 +26,7 @@ var (
 
 func main() {
 	log.Println("[ Redis Monitor Prometheus ]")
+	log.Printf("Granularity: %d\n", granularity)
 	promWriter := &prometheus.Writer{
 		Granularity: granularity,
 	}
