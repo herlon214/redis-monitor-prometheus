@@ -3,13 +3,7 @@ package redis
 import (
 	"io"
 	"log"
-	"os"
 	"os/exec"
-)
-
-var (
-	// redisURI is used to connect to redis
-	redisURI = os.Getenv("REDIS_URI")
 )
 
 // Writer is the common io interface
@@ -23,7 +17,7 @@ type Watcher struct {
 }
 
 // Run spawns a "redis-cli monitor" process
-func (w *Watcher) Run() {
+func (w *Watcher) Run(redisURI string) {
 	cmd := exec.Command("redis-cli", "-u", redisURI, "monitor")
 
 	mw := io.MultiWriter(w.Writer)
