@@ -20,10 +20,16 @@ func ExtractQueryFromLine(line string, granularity int) (string, error) {
 	// Return based on granularity
 	if granularity == 0 {
 		return query, nil
-	} else {
-		granularQuery := strings.Split(query, " ")
-		granularQuery = granularQuery[0:granularity]
-
-		return strings.Join(granularQuery, " "), nil
 	}
+
+	granularQuery := strings.Split(query, " ")
+
+	// Avoid access array out of bounds
+	if len(granularQuery) < granularity {
+		return query, nil
+	}
+
+	granularQuery = granularQuery[0:granularity]
+
+	return strings.Join(granularQuery, " "), nil
 }
