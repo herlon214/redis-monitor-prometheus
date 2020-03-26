@@ -32,3 +32,9 @@ func TestExtractQueryFromLineGranularity2(t *testing.T) {
 		t.Errorf("Invalid extracted query output: %s", query)
 	}
 }
+
+func TestExtractQueryFromLineWithTwoSpaces(t *testing.T) {
+	line := "one two three"
+	// was panic(slice bounds out of range) if splitted slice length == 3
+	_, _ = redis.ExtractQueryFromLine(line, 2)
+}
