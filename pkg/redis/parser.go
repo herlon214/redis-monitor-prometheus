@@ -9,7 +9,7 @@ import (
 func ExtractQueryFromLine(line string, granularity int) (string, error) {
 	querySlice := strings.Split(line, " ")
 
-	if len(querySlice) < 3 {
+	if len(querySlice) <= 3 {
 		return "", fmt.Errorf("Not a query line: %s", line)
 	}
 
